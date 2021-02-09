@@ -1,5 +1,5 @@
 """
-ProductCategory class - used by Product class
+Product spec classes - used by Product class
 """
 from enum import Enum
 

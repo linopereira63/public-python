@@ -39,7 +39,6 @@ class ProductManager(BaseManager):
         self._products[pid] = Product(pid, "Acme Aspirin", "Generic Acme Aspirin", ProductCategory.DRUGS, 5.99, 125)
 
     def get_all(self):
-        # TODO:  cache this
         temp_list = [c for c in self._products.values()]
         schema = ProductSchema(many=True)
         return jsonify(schema.dump(temp_list).data)

@@ -2,6 +2,7 @@
 Customer class
 """
 from marshmallow import Schema, fields
+from .customer_type import CustomerType
 
 
 class Customer:
@@ -11,6 +12,7 @@ class Customer:
         self.name = name
         self.address = address
         self.type = cust_type
+        self.is_premium = (cust_type == CustomerType.PREMIUM)
 
 
 """
@@ -23,3 +25,4 @@ class CustomerSchema(Schema):
     name = fields.Str()
     address = fields.Str()
     type = fields.Str()
+    is_premium = fields.Boolean()
