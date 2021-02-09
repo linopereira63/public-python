@@ -4,18 +4,19 @@ BaseManager class - provides common singleton manager behavior
 
 
 class BaseManager:
-    # Singleton instance that everyone should call
-    _instance = None
+
+    def __init__(self):
+        self.next_id = 0
+
+    def _get_next_id(self):
+        self.next_id += 1
+        return self.next_id
 
     @staticmethod
-    def get_instance():
-        # Must be implemented by derived class
-        return BaseManager._instance
+    def convert_string_id(str_id):
+        if str_id.isdigit():
+            return int(str_id), None
+        else:
+            return -1, "Invalid ID " + str_id
 
-    _NEXT_ID = 0
-
-    @staticmethod
-    def _get_next_id():
-        BaseManager._NEXT_ID += 1
-        return BaseManager._NEXT_ID
 

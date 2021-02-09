@@ -11,17 +11,21 @@ from .base_manager import BaseManager
 
 class CustomerManager(BaseManager):
     # Singleton instance that everyone should call
+    _instance = None
+
     @staticmethod
     def get_instance():
-        if not BaseManager._instance:
-            BaseManager._instance = CustomerManager()
-        return BaseManager._instance
+        if not CustomerManager._instance:
+            CustomerManager._instance = CustomerManager()
+        return CustomerManager._instance
 
     def __init__(self):
+        super().__init__()
         # K:id, V:customer
         self._customers = {}
         self._create_initial_data()
 
+    # TODO: remove this dummy data
     def _create_initial_data(self):
         cid = self._get_next_id()
         self._customers[cid] = Customer(cid, "Joe", "123 Here St, Boulder, CO", CustomerType.STANDARD)
@@ -35,8 +39,9 @@ class CustomerManager(BaseManager):
         return jsonify(schema.dump(temp_list).data)
 
     def get(self, customer_id):
-        # TODO: add checking for non-int customer_id
-        cid = int(customer_id)
+        cid, err = BaseManager.convert_string_id(customer_id)
+        if err:
+            return err, HTTPStatus.BAD_REQUEST
         if cid in self._customers:
             cust = self._customers[cid]
             schema = CustomerSchema()
@@ -52,8 +57,9 @@ class CustomerManager(BaseManager):
         return "Added customer ID " + str(cid), HTTPStatus.CREATED
 
     def delete(self, customer_id):
-        # TODO: add checking for non-int customer_id
-        cid = int(customer_id)
+        cid, err = BaseManager.convert_string_id(customer_id)
+        if err:
+            return err, HTTPStatus.BAD_REQUEST
         if cid in self._customers:
             self._customers.pop(cid)
             return "Deleted customer ID " + str(cid), HTTPStatus.NO_CONTENT
