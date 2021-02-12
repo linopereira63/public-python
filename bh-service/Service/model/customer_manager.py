@@ -51,6 +51,9 @@ class CustomerManager(BaseManager):
 
     def add(self, request):
         customer = CustomerSchema().load(request.get_json())
+        if customer.errors:
+            for k, err in customer.errors.items():
+                return err[0], HTTPStatus.BAD_REQUEST
         cid = self._get_next_id()
         customer.data["id"] = cid
         self._customers[cid] = customer.data

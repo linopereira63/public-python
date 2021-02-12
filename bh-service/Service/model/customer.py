@@ -1,7 +1,7 @@
 """
 Customer class
 """
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates, ValidationError
 from .customer_type import CustomerType
 
 
@@ -22,7 +22,12 @@ CustomerSchema class
 
 class CustomerSchema(Schema):
     id = fields.Integer()
-    name = fields.Str()
-    address = fields.Str()
+    name = fields.Str(required=True)
+    address = fields.Str(required=True)
     type = fields.Str()
     is_premium = fields.Boolean()
+
+    @validates("name")
+    def validate_name(self, value):
+        if not value or len(value) < 1:
+            raise ValidationError("Invalid name value")

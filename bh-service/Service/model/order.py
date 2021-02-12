@@ -1,6 +1,5 @@
 from marshmallow import Schema, fields
 from .order_specs import OrderStatus
-
 """
 OrderItem class
 """
@@ -10,13 +9,14 @@ class OrderItem:
 
     def __init__(self, product_id, quantity, price):
         self.product_id = product_id
-        self.quantity = quantity
         self.price = price
-        self.total_cost = self.quantity * self.price
+        self.quantity = 0
+        self.total_cost = 0.00
+        self.update_quantity(quantity)
 
     def update_quantity(self, quantity):
         self.quantity += quantity
-        self.total_cost = self.quantity * self.price
+        self.total_cost = round(self.quantity * self.price, 2)
 
 
 """
@@ -27,8 +27,8 @@ OrderItemSchema class
 class OrderItemSchema(Schema):
     product_id = fields.Integer()
     quantity = fields.Integer()
-    price = fields.Decimal()
-    total_cost = fields.Decimal()
+    price = fields.Float()
+    total_cost = fields.Float()
 
 
 """
@@ -61,6 +61,7 @@ class Order:
         self.order_cost = self.shipping
         for item in self.items:
             self.order_cost += item.total_cost
+        self.order_cost = round(self.order_cost, 2)
 
     def place_order(self):
         self.order_status = OrderStatus.PLACED
@@ -77,5 +78,5 @@ class OrderSchema(Schema):
     is_premium = fields.Boolean()
     items = fields.Nested(OrderItemSchema, many=True)
     shipping = fields.Decimal()
-    order_cost = fields.Decimal()
+    order_cost = fields.Float()
     order_status = fields.Str()
