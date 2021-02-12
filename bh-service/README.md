@@ -80,6 +80,8 @@ Add cancel_order() but only if Order.status = PLACED
 
 Add get_orders_by_customer_id(customer_id)
 
+Secure the APIs.
+
 
 
 
