@@ -25,36 +25,61 @@ The single deliverable is the link to a GitHub repo containing both your code fo
 README file listing a) any assumptions you’ve made in designing your solution, and b) optionally, a list of
 additional work you would have done had time permitted.
 
-##### My Assumptions:
-Customer Use Case:
+#### My Assumptions:
+
+##### Customer Use Case:
+
 Add customer, including authentication/authorization, assumed to have happened beforehand.
+
 Customer authenticates, then gets customer via ID.
+
 Query for available products (currently getting all).
+
 Create Order with customer_id and is_premium.
-Add item to order with product_id, quantity and price
-Remove item from order (not implemented here)
-Place Order, after which, the order cannot be changed
-View order by customer_id (currently getting all)
 
-Admin/Backend Use Cases Considered:
-Get all customers
-Get products running low in stock and refilling products
-Get PLACED Orders and fulfill them
+Add item to order with product_id, quantity and price.
 
-Other assumptions:
+Remove item from order (not implemented here).
+
+Place Order, after which, the order cannot be changed.
+
+View order by customer_id (currently getting all).
+
+
+##### Admin/Backend Use Cases Considered:
+
+Get all customers.
+
+Get products running low in stock and refilling products.
+
+Get PLACED Orders and fulfill them.
+
+
+##### Other assumptions:
 Order.status dictates the state of the order, which is fine here. For scalability, orders would get moved from IN_CART 
 queue to PLACED queue and so on.
 
-##### Additional work required: 
-Add unit tests for all
+
+#### Additional work required: 
+
+Add unit tests for all.
+
 Add validation for all fields.
+
 Add Edit methods, which would be done via a PUT and return NO_CONTENT on success.
+
 Restrict some fields from being exposed, such as Customer.type.
+
 Add get_available_products()
+
 Add remove_order_item(product_id)
+
 Add update_order_item(request), uses product_id to find item to be updated
+
 Add cancel_order() but only if Order.status = PLACED
+
 Add get_orders_by_customer_id(customer_id)
+
 
 
 
